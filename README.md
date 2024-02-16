@@ -1,2 +1,2 @@
 # Lead-Scoring-Case-Study
-Lead scoring is a valuable method for evaluating the potential of a lead, and it's widely employed in customer relationship management (CRM). In this set of information, we'll delve into a case study about lead scoring at UpGrad. We'll explore how to address this task using various machine learning models that learn from labeled data.
+Lead scoring is a crucial technique used to assess the potential of a lead, extensively utilized in Customer Relationship Management (CRM). This case study examines lead scoring at UpGrad, highlighting how different machine learning models can be employed to tackle this task by learning from labeled data.
