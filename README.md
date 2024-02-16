@@ -1,1 +1,1 @@
-# lead_scoring_case
+# lead_scoring_case_study
