@@ -52,17 +52,6 @@ This repository contains a case study focused on lead scoring using machine lear
 ## Problem Statement
 Businesses often receive numerous leads, but not all of them convert into customers. Efficiently categorizing these leads based on their likelihood to convert helps in prioritizing follow-ups and optimizing marketing efforts. This project aims to develop a predictive model that scores leads to identify the most promising ones.
 
-## Table of Contents
-- [Problem Statement](#problem-statement)
-- [Dataset](#dataset)
-- [Libraries Used](#libraries-used)
-- [Exploratory Data Analysis](#exploratory-data-analysis)
-- [Data Cleaning](#data-cleaning)
-- [Model Building](#model-building)
-- [Results](#results)
-- [Conclusion](#conclusion)
-- [How to Use](#how-to-use)
-- [References](#references)
 
 ## Dataset
 The dataset `Leads.csv` contains various attributes of leads such as:
