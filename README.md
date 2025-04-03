@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
     subgraph "Data Sources"
         DS1["Leads.csv"]:::data
@@ -40,3 +41,4 @@ flowchart TD
     classDef process fill:#bbf,stroke:#333,stroke-width:2px,font-weight:bold;
     classDef report fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
     classDef lib fill:#ffc,stroke:#333,stroke-width:2px,color:#000;
+```
