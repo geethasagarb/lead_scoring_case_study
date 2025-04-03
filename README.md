@@ -26,13 +26,13 @@ flowchart TD
     PL ---|"supports"| P3
 
     click DS1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Leads.csv"
-    click DS2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Leads Data Dictionary.xlsx"
-    click P1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead Scoring Case Study.ipynb"
-    click P2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead Scoring Case Study.ipynb"
-    click P3 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead Scoring Case Study.ipynb"
-    click R1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead Scoring Case Study.ipynb"
-    click R2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Assignment Subjective Questions.docx"
-    click R3 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Executive Summary of Lead Scoring Case Study.pdf"
+    click DS2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Leads%20Data%20Dictionary.xlsx"
+    click P1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
+    click P2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
+    click P3 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
+    click R1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
+    click R2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Assignment%20Subjective%20Questions.docx"
+    click R3 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Executive%20Summary%20of%20Lead%20Scoring%20Case%20Study.pdf"
     click R4 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Presentation.pdf"
     click R5 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/README.md"
 
