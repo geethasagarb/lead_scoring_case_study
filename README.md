@@ -1,147 +1,48 @@
-```mermaid
-flowchart TD
-    subgraph "Data Sources"
-        DS1["Leads.csv"]:::data
-        DS2["Leads Data Dictionary.xlsx"]:::data
-    end
+# Lead Scoring: Which Leads Should Sales Call First?
 
-    DS1 -->|"feeds"| P1["Data Cleaning/Preprocessing"]:::process
-    DS2 -->|"feeds"| P1
+X Education, an online course company, gets thousands of leads, but only **38.5% convert**. Sales was calling everyone. I built a logistic regression model that gives every lead a **0–100 score**, so the team can focus on the leads most likely to buy.
 
-    P1 -->|"passes clean data to"| P2["Exploratory Data Analysis"]:::process
+## Result
+At the chosen cutoff, **73% of the leads the model flags actually convert**, almost double the 38.5% baseline. It still catches **~79% of all real conversions**.
 
-    P2 -->|"sends insights to"| P3["Model Building & Evaluation"]:::process
+| | Accuracy | Sensitivity | Specificity | Precision |
+|---|---|---|---|---|
+| Train (6,468 leads) | 80.6% | 79.7% | 81.1% | 72.2% |
+| Test (2,772 leads) | 80.3% | 79.3% | 81.0% | 73.2% |
 
-    subgraph "Output & Reporting"
-        R1["Lead Scoring Case Study.ipynb"]:::report
-        R2["Assignment Subjective Questions.docx"]:::report
-        R3["Executive Summary of Lead Scoring Case Study.pdf"]:::report
-        R4["Presentation.pdf"]:::report
-        R5["README.md"]:::report
-    end
+Train and test scores are nearly identical, so the model generalizes well rather than memorizing.
 
-    P3 -->|"generates results for"| R1
+## What drives conversion
+- **Working professionals** convert at **91.6%**, vs 33.9% for unemployed leads.
+- **Time spent on the website** has a strong positive relationship with conversion.
+- **Landing Page Submission** is the top lead origin (52.9% of leads, 36.2% conversion).
+- Recent activity like **SMS Sent** and **Email Opened**, plus **referral** leads, also feature in the final model.
 
-    PL["Python Libraries: Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, Statsmodels"]:::lib
-    PL ---|"supports"| P2
-    PL ---|"supports"| P3
+## How I built it
+**Data:** 9,240 leads × 37 columns (web behavior, lead source, occupation, last activity).
 
-    click DS1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Leads.csv"
-    click DS2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Leads%20Data%20Dictionary.xlsx"
-    click P1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
-    click P2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
-    click P3 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
-    click R1 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Lead%20Scoring%20Case%20Study.ipynb"
-    click R2 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Assignment%20Subjective%20Questions.docx"
-    click R3 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Executive%20Summary%20of%20Lead%20Scoring%20Case%20Study.pdf"
-    click R4 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/Presentation.pdf"
-    click R5 "https://github.com/geethasagarb/lead_scoring_case_study/blob/master/README.md"
+**Cleaning**
+- Treated "Select" (unanswered form fields) as missing.
+- Dropped 7 columns with more than 40% missing values.
+- Grouped rare categories into "Others".
+- Capped outliers using the IQR method.
+- Dropped near-constant columns, going from 37 to 11 features before encoding.
 
-    classDef data fill:#f9c,stroke:#333,stroke-width:2px,color:#000;
-    classDef process fill:#bbf,stroke:#333,stroke-width:2px,font-weight:bold;
-    classDef report fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
-    classDef lib fill:#ffc,stroke:#333,stroke-width:2px,color:#000;
-```
+**Modeling**
+- One-hot encoded the categoricals and split 70/30.
+- Standardized the numeric features.
+- Dropped 2 features with correlation above 0.85 to the lead source.
+- Used RFE to pick 15 features, then removed non-significant ones (p > 0.05) one at a time. That left **12 features, all with VIF under 2.5**.
 
+**Choosing the cutoff:** I plotted accuracy, sensitivity and specificity across cutoffs from 0 to 0.9 and picked **0.35**, where all three balance. That favors catching real buyers over avoiding false alarms, which is the right trade-off for a sales team.
 
-# Lead Scoring Case Study
+**Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
 
-This repository contains a case study focused on lead scoring using machine learning techniques. The goal is to predict the likelihood of leads converting into customers based on historical data.
-
-
-## Problem Statement
-Businesses often receive numerous leads, but not all of them convert into customers. Efficiently categorizing these leads based on their likelihood to convert helps in prioritizing follow-ups and optimizing marketing efforts. This project aims to develop a predictive model that scores leads to identify the most promising ones.
-
-
-## Dataset
-The dataset `Leads.csv` contains various attributes of leads such as:
-- **Prospect ID**
-- **Lead Number**
-- **Lead Origin**
-- **Lead Source**
-- **Do Not Email**
-- **Do Not Call**
-- **Converted**
-- **Total Visits**
-- **Total Time Spent on Website**
-- **Page Views Per Visit**
-- **Last Activity**
-- **Country**
-- **Specialization**
-- **Current Occupation**
-- **Tags**, etc.
-
-## Libraries Used
-- **Pandas**: Data manipulation
-- **NumPy**: Numerical computations
-- **Matplotlib**, **Seaborn**: Data visualization
-- **Scikit-learn**: Machine learning
-- **Statsmodels**: Statistical modeling
-
-## Exploratory Data Analysis
-- Load the dataset and inspect basic statistics.
-- Check for duplicate values in key columns (`Prospect ID` and `Lead Number`).
-- Display the first few rows and overall shape of the dataset.
-- Generate descriptive statistics and data types information.
-
-## Data Cleaning
-- Replace 'Select' values with NaN to handle unanswered questions.
-- Drop columns with more than 40% missing values to ensure data quality.
-- Handle remaining missing values appropriately.
-
-## Model Building
-1. **Data Splitting**: Split the data into training and testing sets.
-2. **Feature Scaling**: Standardize numerical features.
-3. **Model Selection**: Use algorithms like Logistic Regression.
-4. **Evaluation**: Assess models using metrics like Confusion Matrix, Precision, Recall, and F1 Score.
-
-## Results
-### Training Dataset
-- **Accuracy**: 80.57%
-- **Sensitivity**: 79.72%
-- **Specificity**: 81.08%
-
-### Test Dataset
-- **Accuracy**: 80.34%
-- **Sensitivity**: 79.27%
-- **Specificity**: 81.04%
-
-## Conclusion
-The model demonstrates strong performance in predicting lead conversions with accuracy, sensitivity, and specificity above 80% for both training and test datasets. Key factors influencing higher conversion rates include:
-- Using the 'Lead Add Form'
-- Being a 'Working Professional'
-- Spending more time on the website
-- Referral leads from existing customers
-- Channels like Google and Direct Traffic
-- Engagement through 'SMS Sent' or 'Email Opened'
-
-The most common specialization categories are 'Others', followed by Finance Management, HR Management, and Marketing Management.
-
-## How to Use
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/geethasagarb/lead_scoring_case_study.git
-   cd lead_scoring_case_study
-   ```
-
-2. **Install Required Libraries**:
-   Make sure you have the required libraries installed. You can install them using:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run the Jupyter Notebook**:
-   Open the Jupyter Notebook to explore and run the analysis:
-   ```bash
-   jupyter notebook Lead\ Scoring\ Case\ Study.ipynb
-   ```
-
-## References
-- [Scikit-learn Documentation](https://scikit-learn.org/stable/)
-- [Pandas Documentation](https://pandas.pydata.org/)
-- [Matplotlib Documentation](https://matplotlib.org/)
-- [Seaborn Documentation](https://seaborn.pydata.org/)
-- [Statsmodels Documentation](https://www.statsmodels.org/stable/index.html)
-
----
-
+## Files
+| File | What's in it |
+|---|---|
+| `Lead Scoring Case Study.ipynb` | Full analysis and model, with comments |
+| `Leads.csv` / `Leads Data Dictionary.xlsx` | Raw data and column definitions |
+| `Presentation.pdf` | Slide summary for business stakeholders |
+| `Executive Summary of Lead Scoring Case Study.pdf` | One-page summary |
+| `Assignment Subjective Questions.docx` | Written answers on model use |
