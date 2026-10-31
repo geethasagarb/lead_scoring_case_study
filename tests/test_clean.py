@@ -51,3 +51,17 @@ def test_impute_categoricals_fills_only_known_columns():
 def test_impute_mode_uses_most_common_value():
     df = pd.DataFrame({'TotalVisits': [0.0, 2.0, 2.0, np.nan]})
     assert impute_mode(df, ['TotalVisits'])['TotalVisits'].tolist() == [0.0, 2.0, 2.0, 2.0]
+
+
+def test_drop_single_value_columns_only_drops_constant_text():
+    df = pd.DataFrame({
+        'constant_text': ['No', 'No', 'No'],
+        'varied_text': ['a', 'b', 'a'],
+        'constant_number': [1, 1, 1],
+    })
+    assert list(drop_single_value_columns(df).columns) == ['varied_text', 'constant_number']
+
+
+def test_group_rare_maps_listed_values_and_keeps_others():
+    s = pd.Series(['bing', 'Google', 'blog', 'Reference'])
+    assert group_rare(s, ['bing', 'blog']).tolist() == ['Others', 'Google', 'Others', 'Reference']
