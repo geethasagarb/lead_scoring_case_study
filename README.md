@@ -82,6 +82,8 @@ duckdb -c ".read sql/lead_score.sql"
 | `reports/subjective_questions.docx` | Written answers on model use |
 | `reports/figures/` | Charts saved by the notebook |
 | `sql/lead_score.sql` | Lead score rebuilt in SQL (DuckDB) |
+| `src/clean.py` | Cleaning steps as reusable, tested functions |
+| `tests/` | pytest unit tests and end-to-end checks on the real data |
 
 ## How to run
 ```bash
