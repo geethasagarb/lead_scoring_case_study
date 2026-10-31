@@ -91,3 +91,8 @@ pip install -r requirements.txt
 cd notebooks
 jupyter notebook lead_scoring_case_study.ipynb
 ```
+
+Run the tests from the repo root:
+```bash
+pytest
+```
