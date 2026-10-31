@@ -60,3 +60,10 @@ RARE_LAST_ACTIVITIES = [
 def group_rare(series: pd.Series, rare_values: list, label: str = 'Others') -> pd.Series:
     """Replace each value in `rare_values` with a single `label`."""
     return series.replace({value: label for value in rare_values})
+
+
+def cap_outliers_iqr(series: pd.Series, k: float = 1.5) -> pd.Series:
+    """Cap and floor values outside [Q1 - k*IQR, Q3 + k*IQR]."""
+    q1, q3 = series.quantile(0.25), series.quantile(0.75)
+    iqr = q3 - q1
+    return series.clip(lower=q1 - k * iqr, upper=q3 + k * iqr).astype(float)
