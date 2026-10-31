@@ -12,6 +12,19 @@ At the chosen cutoff, **73% of the leads the model flags actually convert**, alm
 
 Train and test scores are nearly identical, so the model generalizes well rather than memorizing.
 
+## Who to call first
+I grouped the test-set leads into three buckets by score:
+
+| Bucket | Score | Leads | Conversion rate | Share of all conversions |
+|---|---|---|---|---|
+| 🔥 Hot | 70–100 | 614 (22%) | 86.5% | 48.5% |
+| Warm | 35–69 | 589 (21%) | 58.2% | 31.3% |
+| Cold | 0–34 | 1,569 (57%) | 14.1% | 20.2% |
+
+Calling only the Hot and Warm leads, **43% of the list, reaches 80% of the buyers**. Cold leads can be nurtured by email instead.
+
+![Conversion rate by lead score bucket](reports/figures/lead_score_buckets.png)
+
 ## What drives conversion
 - **Working professionals** convert at **91.6%**, vs 33.9% for unemployed leads.
 - **Time spent on the website** has a strong positive relationship with conversion.
