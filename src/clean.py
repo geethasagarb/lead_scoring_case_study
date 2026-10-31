@@ -35,3 +35,10 @@ def impute_categoricals(df: pd.DataFrame, fill: dict = CATEGORICAL_FILL) -> pd.D
 def impute_mode(df: pd.DataFrame, columns: list) -> pd.DataFrame:
     """Fill missing values in numeric columns with each column's mode."""
     return df.fillna({col: df[col].mode()[0] for col in columns})
+
+
+def drop_single_value_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Drop text columns that hold only one distinct value."""
+    text_cols = df.select_dtypes(include='object').columns
+    single = [col for col in text_cols if df[col].nunique() == 1]
+    return df.drop(columns=single)
