@@ -50,7 +50,20 @@ Calling only the Hot and Warm leads, **43% of the list, reaches 80% of the buyer
 
 **Choosing the cutoff:** I plotted accuracy, sensitivity and specificity across cutoffs from 0 to 0.9 and picked **0.35**, where all three balance. That favors catching real buyers over avoiding false alarms, which is the right trade-off for a sales team.
 
-**Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
+**Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression, RandomForest, GradientBoosting) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
+
+## Why logistic regression?
+I also trained a random forest and a gradient boosting model on all 46 features and compared them on the same test set:
+
+| Model | Features | Test AUC | Sensitivity @0.35 | Precision @0.35 |
+|---|---|---|---|---|
+| **Logistic regression** | 11 | 0.871 | 79.4% | 73.1% |
+| Random forest | 46 | 0.889 | 83.5% | 72.5% |
+| Gradient boosting | 46 | 0.892 | 82.4% | 73.5% |
+
+The tree models rank leads slightly better (about +0.02 AUC), with the same precision. I kept logistic regression because it uses a quarter of the features, each coefficient tells sales *why* a lead scored high, and the score can be rebuilt in SQL or a CRM.
+
+![ROC curves for the three models](reports/figures/model_comparison_roc.png)
 
 ## Repository structure
 | Path | What's in it |
