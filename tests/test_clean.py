@@ -34,3 +34,20 @@ def test_drop_high_missing_uses_threshold_inclusively():
         'keep_some': [1, 2, 3, 4, np.nan],       # 20% missing -> kept
     })
     assert list(drop_high_missing(df).columns) == ['keep', 'keep_some']
+
+
+def test_impute_categoricals_fills_only_known_columns():
+    df = pd.DataFrame({
+        'Specialization': [np.nan, 'Finance Management'],
+        'Lead Source': [np.nan, 'Reference'],
+        'Other': [np.nan, 'x'],
+    })
+    out = impute_categoricals(df)
+    assert out['Specialization'].tolist() == ['Others', 'Finance Management']
+    assert out['Lead Source'].tolist() == ['Google', 'Reference']
+    assert out['Other'].isna().iloc[0]
+
+
+def test_impute_mode_uses_most_common_value():
+    df = pd.DataFrame({'TotalVisits': [0.0, 2.0, 2.0, np.nan]})
+    assert impute_mode(df, ['TotalVisits'])['TotalVisits'].tolist() == [0.0, 2.0, 2.0, 2.0]
