@@ -42,3 +42,21 @@ def drop_single_value_columns(df: pd.DataFrame) -> pd.DataFrame:
     text_cols = df.select_dtypes(include='object').columns
     single = [col for col in text_cols if df[col].nunique() == 1]
     return df.drop(columns=single)
+
+
+RARE_LEAD_SOURCES = [
+    'bing', 'Click2call', 'Press_Release', 'Social Media', 'Live Chat',
+    'youtubechannel', 'testone', 'Pay per Click Ads', 'welearnblog_Home',
+    'WeLearn', 'blog', 'NC_EDM',
+]
+
+RARE_LAST_ACTIVITIES = [
+    'Unreachable', 'Unsubscribed', 'Had a Phone Conversation',
+    'Approached upfront', 'View in browser link Clicked', 'Email Marked Spam',
+    'Email Received', 'Visited Booth in Tradeshow', 'Resubscribed to emails',
+]
+
+
+def group_rare(series: pd.Series, rare_values: list, label: str = 'Others') -> pd.Series:
+    """Replace each value in `rare_values` with a single `label`."""
+    return series.replace({value: label for value in rare_values})
