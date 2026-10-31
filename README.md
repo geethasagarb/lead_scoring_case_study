@@ -50,7 +50,7 @@ Calling only the Hot and Warm leads, **43% of the list, reaches 80% of the buyer
 
 **Choosing the cutoff:** I plotted accuracy, sensitivity and specificity across cutoffs from 0 to 0.9 and picked **0.35**, where all three balance. That favors catching real buyers over avoiding false alarms, which is the right trade-off for a sales team.
 
-**Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression, RandomForest, GradientBoosting) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
+**Stack:** Python · SQL (DuckDB) · pandas · scikit-learn (RFE, LogisticRegression, RandomForest, GradientBoosting) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
 
 ## Why logistic regression?
 I also trained a random forest and a gradient boosting model on all 46 features and compared them on the same test set:
@@ -81,6 +81,7 @@ duckdb -c ".read sql/lead_score.sql"
 | `reports/executive_summary.pdf` | One-page summary |
 | `reports/subjective_questions.docx` | Written answers on model use |
 | `reports/figures/` | Charts saved by the notebook |
+| `sql/lead_score.sql` | Lead score rebuilt in SQL (DuckDB) |
 
 ## How to run
 ```bash
