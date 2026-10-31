@@ -7,16 +7,30 @@ At the chosen cutoff, **73% of the leads the model flags actually convert**, alm
 
 | | Accuracy | Sensitivity | Specificity | Precision |
 |---|---|---|---|---|
-| Train (6,468 leads) | 80.6% | 79.7% | 81.1% | 72.2% |
-| Test (2,772 leads) | 80.3% | 79.3% | 81.0% | 73.2% |
+| Train (6,468 leads) | 80.8% | 79.9% | 81.3% | 72.4% |
+| Test (2,772 leads) | 80.3% | 79.4% | 80.9% | 73.1% |
 
 Train and test scores are nearly identical, so the model generalizes well rather than memorizing.
+
+## Who to call first
+I grouped the test-set leads into three buckets by score:
+
+| Bucket | Score | Leads | Conversion rate | Share of all conversions |
+|---|---|---|---|---|
+| 🔥 Hot | 70–100 | 614 (22%) | 86.5% | 48.5% |
+| Warm | 35–69 | 589 (21%) | 58.2% | 31.3% |
+| Cold | 0–34 | 1,569 (57%) | 14.1% | 20.2% |
+
+Calling only the Hot and Warm leads, **43% of the list, reaches 80% of the buyers**. Cold leads can be nurtured by email instead.
+
+![Conversion rate by lead score bucket](reports/figures/lead_score_buckets.png)
 
 ## What drives conversion
 - **Working professionals** convert at **91.6%**, vs 33.9% for unemployed leads.
 - **Time spent on the website** has a strong positive relationship with conversion.
-- **Landing Page Submission** is the top lead origin (52.9% of leads, 36.2% conversion).
-- Recent activity like **SMS Sent** and **Email Opened**, plus **referral** leads, also feature in the final model.
+- **Referrals** from existing customers and leads from the **Welingak website** have the strongest positive effect in the model.
+- Recent activity like **SMS Sent** and **Email Opened** raises the chance of converting.
+- **Landing Page Submission** is the most common lead origin (52.9% of leads) but converts below average (36.2%), and the model gives it a negative weight.
 
 ## How I built it
 **Data:** 9,240 leads × 37 columns (web behavior, lead source, occupation, last activity).
@@ -32,11 +46,24 @@ Train and test scores are nearly identical, so the model generalizes well rather
 - One-hot encoded the categoricals and split 70/30.
 - Standardized the numeric features.
 - Dropped 2 features with correlation above 0.85 to the lead source.
-- Used RFE to pick 15 features, then removed non-significant ones (p > 0.05) one at a time. That left **12 features, all with VIF under 2.5**.
+- Used RFE to pick 15 features, then ran a backward-elimination loop: refit, drop the least significant feature (p ≥ 0.05), otherwise drop any feature with VIF above 5, and repeat. That left **11 features, all with VIF under 2.2**.
 
 **Choosing the cutoff:** I plotted accuracy, sensitivity and specificity across cutoffs from 0 to 0.9 and picked **0.35**, where all three balance. That favors catching real buyers over avoiding false alarms, which is the right trade-off for a sales team.
 
-**Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
+**Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression, RandomForest, GradientBoosting) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
+
+## Why logistic regression?
+I also trained a random forest and a gradient boosting model on all 46 features and compared them on the same test set:
+
+| Model | Features | Test AUC | Sensitivity @0.35 | Precision @0.35 |
+|---|---|---|---|---|
+| **Logistic regression** | 11 | 0.871 | 79.4% | 73.1% |
+| Random forest | 46 | 0.889 | 83.5% | 72.5% |
+| Gradient boosting | 46 | 0.892 | 82.4% | 73.5% |
+
+The tree models rank leads slightly better (about +0.02 AUC), with the same precision. I kept logistic regression because it uses a quarter of the features, each coefficient tells sales *why* a lead scored high, and the score can be rebuilt in SQL or a CRM.
+
+![ROC curves for the three models](reports/figures/model_comparison_roc.png)
 
 ## Repository structure
 | Path | What's in it |
@@ -46,6 +73,7 @@ Train and test scores are nearly identical, so the model generalizes well rather
 | `reports/presentation.pdf` | Slide summary for business stakeholders |
 | `reports/executive_summary.pdf` | One-page summary |
 | `reports/subjective_questions.docx` | Written answers on model use |
+| `reports/figures/` | Charts saved by the notebook |
 
 ## How to run
 ```bash
