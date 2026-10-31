@@ -32,7 +32,7 @@ Train and test scores are nearly identical, so the model generalizes well rather
 - One-hot encoded the categoricals and split 70/30.
 - Standardized the numeric features.
 - Dropped 2 features with correlation above 0.85 to the lead source.
-- Used RFE to pick 15 features, then removed non-significant ones (p > 0.05) one at a time. That left **12 features, all with VIF under 2.5**.
+- Used RFE to pick 15 features, then ran a backward-elimination loop: refit, drop the least significant feature (p ≥ 0.05), otherwise drop any feature with VIF above 5, and repeat. That left **11 features, all with VIF under 2.2**.
 
 **Choosing the cutoff:** I plotted accuracy, sensitivity and specificity across cutoffs from 0 to 0.9 and picked **0.35**, where all three balance. That favors catching real buyers over avoiding false alarms, which is the right trade-off for a sales team.
 
