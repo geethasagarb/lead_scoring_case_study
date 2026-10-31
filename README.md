@@ -7,8 +7,8 @@ At the chosen cutoff, **73% of the leads the model flags actually convert**, alm
 
 | | Accuracy | Sensitivity | Specificity | Precision |
 |---|---|---|---|---|
-| Train (6,468 leads) | 80.6% | 79.7% | 81.1% | 72.2% |
-| Test (2,772 leads) | 80.3% | 79.3% | 81.0% | 73.2% |
+| Train (6,468 leads) | 80.8% | 79.9% | 81.3% | 72.4% |
+| Test (2,772 leads) | 80.3% | 79.4% | 80.9% | 73.1% |
 
 Train and test scores are nearly identical, so the model generalizes well rather than memorizing.
 
