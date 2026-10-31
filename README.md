@@ -1,5 +1,7 @@
 # Lead Scoring: Which Leads Should Sales Call First?
 
+[![tests](https://github.com/geethasagarb/lead_scoring_case_study/actions/workflows/tests.yml/badge.svg)](https://github.com/geethasagarb/lead_scoring_case_study/actions/workflows/tests.yml)
+
 X Education, an online course company, gets thousands of leads, but only **38.5% convert**. Sales was calling everyone. I built a logistic regression model that gives every lead a **0–100 score**, so the team can focus on the leads most likely to buy.
 
 ## Result
@@ -82,10 +84,17 @@ duckdb -c ".read sql/lead_score.sql"
 | `reports/subjective_questions.docx` | Written answers on model use |
 | `reports/figures/` | Charts saved by the notebook |
 | `sql/lead_score.sql` | Lead score rebuilt in SQL (DuckDB) |
+| `src/clean.py` | Cleaning steps as reusable, tested functions |
+| `tests/` | pytest unit tests and end-to-end checks on the real data |
 
 ## How to run
 ```bash
 pip install -r requirements.txt
 cd notebooks
 jupyter notebook lead_scoring_case_study.ipynb
+```
+
+Run the tests from the repo root:
+```bash
+pytest
 ```
