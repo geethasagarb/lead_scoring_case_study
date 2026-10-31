@@ -65,6 +65,13 @@ The tree models rank leads slightly better (about +0.02 AUC), with the same prec
 
 ![ROC curves for the three models](reports/figures/model_comparison_roc.png)
 
+## Lead score in SQL
+[`sql/lead_score.sql`](sql/lead_score.sql) rebuilds the score in DuckDB. It repeats the cleaning steps, applies the 11 coefficients and the sigmoid, and assigns each lead a Hot/Warm/Cold bucket. That means the model can run inside a warehouse or CRM with no Python. A check in the notebook confirms it gives **identical scores** to the Python model for all 2,772 test leads.
+
+```bash
+duckdb -c ".read sql/lead_score.sql"
+```
+
 ## Repository structure
 | Path | What's in it |
 |---|---|
