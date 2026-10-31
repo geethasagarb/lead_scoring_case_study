@@ -1,5 +1,7 @@
 # Lead Scoring: Which Leads Should Sales Call First?
 
+[![tests](https://github.com/geethasagarb/lead_scoring_case_study/actions/workflows/tests.yml/badge.svg)](https://github.com/geethasagarb/lead_scoring_case_study/actions/workflows/tests.yml)
+
 X Education, an online course company, gets thousands of leads, but only **38.5% convert**. Sales was calling everyone. I built a logistic regression model that gives every lead a **0–100 score**, so the team can focus on the leads most likely to buy.
 
 ## Result
