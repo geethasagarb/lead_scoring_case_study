@@ -65,3 +65,14 @@ def test_drop_single_value_columns_only_drops_constant_text():
 def test_group_rare_maps_listed_values_and_keeps_others():
     s = pd.Series(['bing', 'Google', 'blog', 'Reference'])
     assert group_rare(s, ['bing', 'blog']).tolist() == ['Others', 'Google', 'Others', 'Reference']
+
+
+def test_cap_outliers_iqr_caps_and_floors():
+    # Q1 = 2, Q3 = 4, IQR = 2 -> bounds [-1, 7]
+    s = pd.Series([-10, 2, 3, 4, 100])
+    assert cap_outliers_iqr(s).tolist() == [-1.0, 2.0, 3.0, 4.0, 7.0]
+
+
+def test_cap_outliers_iqr_leaves_values_inside_bounds():
+    s = pd.Series([1, 2, 3, 4, 5])
+    pd.testing.assert_series_equal(cap_outliers_iqr(s), s.astype(float))
