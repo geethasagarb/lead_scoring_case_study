@@ -59,6 +59,7 @@ Calling only the Hot and Warm leads, **43% of the list, reaches 80% of the buyer
 | `reports/presentation.pdf` | Slide summary for business stakeholders |
 | `reports/executive_summary.pdf` | One-page summary |
 | `reports/subjective_questions.docx` | Written answers on model use |
+| `reports/figures/` | Charts saved by the notebook |
 
 ## How to run
 ```bash
