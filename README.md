@@ -50,7 +50,7 @@ Calling only the Hot and Warm leads, **43% of the list, reaches 80% of the buyer
 
 **Choosing the cutoff:** I plotted accuracy, sensitivity and specificity across cutoffs from 0 to 0.9 and picked **0.35**, where all three balance. That favors catching real buyers over avoiding false alarms, which is the right trade-off for a sales team.
 
-**Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression, RandomForest, GradientBoosting) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
+**Stack:** Python · SQL (DuckDB) · pandas · scikit-learn (RFE, LogisticRegression, RandomForest, GradientBoosting) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
 
 ## Why logistic regression?
 I also trained a random forest and a gradient boosting model on all 46 features and compared them on the same test set:
@@ -65,6 +65,13 @@ The tree models rank leads slightly better (about +0.02 AUC), with the same prec
 
 ![ROC curves for the three models](reports/figures/model_comparison_roc.png)
 
+## Lead score in SQL
+[`sql/lead_score.sql`](sql/lead_score.sql) rebuilds the score in DuckDB. It repeats the cleaning steps, applies the 11 coefficients and the sigmoid, and assigns each lead a Hot/Warm/Cold bucket. That means the model can run inside a warehouse or CRM with no Python. A check in the notebook confirms it gives **identical scores** to the Python model for all 2,772 test leads.
+
+```bash
+duckdb -c ".read sql/lead_score.sql"
+```
+
 ## Repository structure
 | Path | What's in it |
 |---|---|
@@ -74,6 +81,7 @@ The tree models rank leads slightly better (about +0.02 AUC), with the same prec
 | `reports/executive_summary.pdf` | One-page summary |
 | `reports/subjective_questions.docx` | Written answers on model use |
 | `reports/figures/` | Charts saved by the notebook |
+| `sql/lead_score.sql` | Lead score rebuilt in SQL (DuckDB) |
 
 ## How to run
 ```bash
