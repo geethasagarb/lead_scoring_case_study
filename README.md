@@ -38,11 +38,18 @@ Train and test scores are nearly identical, so the model generalizes well rather
 
 **Stack:** Python · pandas · scikit-learn (RFE, LogisticRegression) · statsmodels (GLM, VIF) · Matplotlib / Seaborn
 
-## Files
-| File | What's in it |
+## Repository structure
+| Path | What's in it |
 |---|---|
-| `Lead Scoring Case Study.ipynb` | Full analysis and model, with comments |
-| `Leads.csv` / `Leads Data Dictionary.xlsx` | Raw data and column definitions |
-| `Presentation.pdf` | Slide summary for business stakeholders |
-| `Executive Summary of Lead Scoring Case Study.pdf` | One-page summary |
-| `Assignment Subjective Questions.docx` | Written answers on model use |
+| `notebooks/lead_scoring_case_study.ipynb` | Full analysis and model, with comments |
+| `data/leads.csv` / `data/leads_data_dictionary.xlsx` | Raw data and column definitions |
+| `reports/presentation.pdf` | Slide summary for business stakeholders |
+| `reports/executive_summary.pdf` | One-page summary |
+| `reports/subjective_questions.docx` | Written answers on model use |
+
+## How to run
+```bash
+pip install -r requirements.txt
+cd notebooks
+jupyter notebook lead_scoring_case_study.ipynb
+```
