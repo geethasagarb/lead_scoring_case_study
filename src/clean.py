@@ -67,3 +67,39 @@ def cap_outliers_iqr(series: pd.Series, k: float = 1.5) -> pd.Series:
     q1, q3 = series.quantile(0.25), series.quantile(0.75)
     iqr = q3 - q1
     return series.clip(lower=q1 - k * iqr, upper=q3 + k * iqr).astype(float)
+
+
+# Columns dropped for reasons explained in the notebook
+LOW_VALUE_COLUMNS = ['City', 'Tags', 'Country', 'What matters most to you in choosing a course']
+ID_COLUMNS = ['Prospect ID', 'Lead Number', 'Last Notable Activity']
+SKEWED_COLUMNS = [
+    'Do Not Call', 'Search', 'Newspaper Article', 'X Education Forums',
+    'Newspaper', 'Digital Advertisement', 'Through Recommendations',
+]
+NUMERIC_COLUMNS = ['TotalVisits', 'Total Time Spent on Website', 'Page Views Per Visit']
+RENAMES = {
+    'A free copy of Mastering The Interview': 'Free_Copy',
+    'What is your current occupation': 'Current_Occupation',
+}
+BINARY_COLUMNS = ['Do Not Email', 'Free_Copy']
+
+
+def clean_leads(raw: pd.DataFrame) -> pd.DataFrame:
+    """Run every cleaning step from the notebook, in the same order."""
+    df = replace_select(raw)
+    df = drop_high_missing(df)
+    df = df.drop(columns=LOW_VALUE_COLUMNS)
+    df = impute_categoricals(df)
+    df = impute_mode(df, ['TotalVisits', 'Page Views Per Visit'])
+    df = drop_single_value_columns(df)
+    df = df.drop(columns=ID_COLUMNS + SKEWED_COLUMNS)
+
+    for col in NUMERIC_COLUMNS:
+        df[col] = cap_outliers_iqr(df[col])
+
+    df['Lead Source'] = group_rare(df['Lead Source'], RARE_LEAD_SOURCES).str.capitalize()
+    df['Last Activity'] = group_rare(df['Last Activity'], RARE_LAST_ACTIVITIES)
+
+    df = df.rename(columns=RENAMES)
+    df[BINARY_COLUMNS] = df[BINARY_COLUMNS].apply(lambda col: col.map({'Yes': 1, 'No': 0}))
+    return df
