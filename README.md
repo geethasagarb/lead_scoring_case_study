@@ -28,8 +28,9 @@ Calling only the Hot and Warm leads, **43% of the list, reaches 80% of the buyer
 ## What drives conversion
 - **Working professionals** convert at **91.6%**, vs 33.9% for unemployed leads.
 - **Time spent on the website** has a strong positive relationship with conversion.
-- **Landing Page Submission** is the top lead origin (52.9% of leads, 36.2% conversion).
-- Recent activity like **SMS Sent** and **Email Opened**, plus **referral** leads, also feature in the final model.
+- **Referrals** from existing customers and leads from the **Welingak website** have the strongest positive effect in the model.
+- Recent activity like **SMS Sent** and **Email Opened** raises the chance of converting.
+- **Landing Page Submission** is the most common lead origin (52.9% of leads) but converts below average (36.2%), and the model gives it a negative weight.
 
 ## How I built it
 **Data:** 9,240 leads × 37 columns (web behavior, lead source, occupation, last activity).
